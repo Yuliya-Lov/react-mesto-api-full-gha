@@ -55,13 +55,13 @@ function App() {
   React.useEffect(() => {
     api.getInitialCards()
       .then(cardsData => {
-        setCards(cardsData);
+        setCards(cardsData.data);
       })
       .catch(err => console.error('Ошибка при выполнении запроса:', err));
   }, [])
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser.id);
+    const isLiked = card.likes ? card.likes.some(i => i === currentUser.id) : false;
     const apiRequest = isLiked
       ? api.removeLike(card._id)
       : api.pushLike(card._id);
@@ -69,7 +69,7 @@ function App() {
     apiRequest
       .then((newCard) => {
         setCards((state) =>
-          state.map(item => item._id === card._id ? newCard : item)
+          state.map(item => item._id === card._id ? newCard.data : item)
         )
       })
       .catch(err => console.error('Ошибка при выполнении запроса:', err));
@@ -203,7 +203,7 @@ function App() {
   }
 
   function signOut() {
-    localStorage.removeItem('token');
+    document.cookie = "name=jwt; expires=-1";
     setEmail('');
   }
 
@@ -212,16 +212,24 @@ function App() {
   }
 
   function handletokenCheck() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      auth.checkToken(token)
-        .then(data => {
-          setEmail(data.data.email);
-          handleChangeIsLogged(true);
-          navigate("/", { replace: true });
+    auth.checkToken()
+      .then(data => {
+        setEmail(data.data.email);
+        setCurrentUser({
+          name: data.data.name,
+          about: data.data.about,
+          avatar: data.data.avatar,
+          id: data.data._id
         })
-        .catch(err => console.error(`Ошибка запроса: ${err}`))
-    }
+        api.getInitialCards()
+          .then(cardsData => {
+            setCards(cardsData.data);
+          })
+          .catch(err => console.error('Ошибка при выполнении запроса:', err));
+        handleChangeIsLogged(true);
+        navigate("/", { replace: true });
+      })
+      .catch(err => console.error(`"Ошибка запроса: ${err}`))
   }
 
   React.useEffect(() => {
@@ -238,9 +246,9 @@ function App() {
     return auth.login(em, pass)
       .then(data => {
         handleChangeIsLogged(true);
-        if(data.token){
-          localStorage.setItem('token', data.token);
-        }
+        /*      if(data.token){
+               localStorage.setItem('token', data.token);
+             } */
         navigate("/", { replace: true });
       })
       .catch((e) => {
@@ -254,7 +262,7 @@ function App() {
       .then(() => {
         handleChangeIsSucces(true);
         setIsInfoTooltipOpen(true);
-        navigate('/sign-in', { replace: true })
+        navigate('/signin', { replace: true })
       })
       .catch((e) => {
         handleChangeIsSucces(false);
@@ -286,11 +294,11 @@ function App() {
           />}
           />
           <Route
-          path='/sign-up'
-          element={<Register isLoggedIn={isLoggedIn} onRegister={onRegister} />} />
+            path='/signup'
+            element={<Register isLoggedIn={isLoggedIn} onRegister={onRegister} />} />
           <Route
-          path='/sign-in'
-          element={<Login isLoggedIn={isLoggedIn} handleChangeIsLogged={handleChangeIsLogged} onLogin={onLogin} />} />
+            path='/signin'
+            element={<Login isLoggedIn={isLoggedIn} handleChangeIsLogged={handleChangeIsLogged} onLogin={onLogin} />} />
         </Routes>
         {isLoggedIn && <Footer />}
         <InfoTooltip

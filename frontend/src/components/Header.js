@@ -11,13 +11,13 @@ const Header = (props) => {
     if (location.pathname === '/'){
       props.signOut();
       props.handleChangeIsLogged(false);
-      navigate('/sign-in', {replace: true})
+      navigate('/signin', {replace: true})
     }
-    if (location.pathname === '/sign-in'){
-      navigate('/sign-up', {replace: true})
+    if (location.pathname === '/signin'){
+      navigate('/signup', {replace: true})
     }
-    if (location.pathname === '/sign-up'){
-      navigate('/sign-in', {replace: true})
+    if (location.pathname === '/signup'){
+      navigate('/signin', {replace: true})
     }
   }
 
@@ -28,7 +28,7 @@ const Header = (props) => {
       <div className="header__logged">
       <p className="header__current-user">{props.isLoggedIn ? props.email : ''}</p>
       <button className={`header__action-button ${props.isLoggedIn && 'header__action-button_foggy'}`} onClick={handleClick}>
-        {props.isLoggedIn ? 'Выйти' : (location.pathname === '/sign-in'? 'Регистрация' : 'Вход')}
+        {props.isLoggedIn ? 'Выйти' : (location.pathname === '/signin'? 'Регистрация' : 'Вход')}
         </button>
       </div>
     </header>

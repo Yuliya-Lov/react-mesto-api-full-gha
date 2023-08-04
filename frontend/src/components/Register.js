@@ -33,7 +33,7 @@ const Register = (props) => {
         ]}
         buttonText="Зарегистрироваться"
       />
-      <Link className="access__redirection" to="/sign-in">
+      <Link className="access__redirection" to="/signin">
         Уже зарегистрированы? Войти
       </Link>
     </div>

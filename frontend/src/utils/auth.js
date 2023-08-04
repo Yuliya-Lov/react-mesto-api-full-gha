@@ -1,5 +1,5 @@
 import authRequest from './authRequest.js';
-export const BASE_URL = "https://auth.nomoreparties.co";
+export const BASE_URL = "http://localhost:4000";
 
 export const register = (email, password) => {
   return authRequest(
@@ -9,6 +9,7 @@ export const register = (email, password) => {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: 'include',
       body: JSON.stringify({
         'email': email,
         'password': password
@@ -26,6 +27,7 @@ export const login = (email, password) => {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: 'include',
       body: JSON.stringify({
         'email': email,
         'password': password
@@ -35,15 +37,15 @@ export const login = (email, password) => {
     .catch(res => Promise.reject(res))
 }
 
-export const checkToken = (token) => {
+export const checkToken = () => {
   return authRequest(
     `${BASE_URL}/users/me`,
     {
       method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Content-Type": "application/json"
       },
+      credentials: 'include',
     }
   )
     .catch(res => Promise.reject(res))

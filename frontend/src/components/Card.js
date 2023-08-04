@@ -1,10 +1,9 @@
 import React from "react"
 
 const Card = ({ currentUser, card, handleClick, handleLike, handleDeleteClick }) => {
+  const isOwn = card.owner === currentUser.id;
 
-  const isOwn = card.owner._id === currentUser.id;
-
-  const isLiked = card.likes.some(i => i._id === currentUser.id);
+  const isLiked = card.likes ? card.likes.some(i => i === currentUser.id) : false;
   const cardLikeButtonClassName = (
     `place__like-button ${isLiked && 'place__like-button_active'}`
   );
@@ -27,7 +26,7 @@ const Card = ({ currentUser, card, handleClick, handleLike, handleDeleteClick })
           type="button"
           onClick={() => handleLike(card)}
           className={cardLikeButtonClassName}
-          aria-label="Поставить лайк.">{card.likes.length}</button>
+          aria-label="Поставить лайк.">{card.likes? card.likes.length : 0}</button>
       </div>
     </article>
   )

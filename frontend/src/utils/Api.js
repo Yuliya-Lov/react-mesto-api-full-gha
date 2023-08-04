@@ -12,7 +12,8 @@ class Api {
 
   getUserInfo(){
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     })
     .then(res => this._isResponseOk(res))
   }
@@ -21,6 +22,7 @@ class Api {
     return  fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify(bodyInfo)
     })
     .then(res => this._isResponseOk(res))
@@ -30,6 +32,7 @@ class Api {
     return  fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         avatar: newAvatar,
       })
@@ -39,7 +42,8 @@ class Api {
 
   getInitialCards() {
     return  fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     })
     .then(res => this._isResponseOk(res))
   }
@@ -48,6 +52,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify(cardObj)
     })
     .then(res => this._isResponseOk(res))
@@ -56,7 +61,8 @@ class Api {
   removeCard(cardId){
     return fetch(`${this._baseUrl}/cards/${cardId}`,{
       method:'DELETE',
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     })
     .then(res => this._isResponseOk(res))
   }
@@ -64,7 +70,8 @@ class Api {
   pushLike(cardId){
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`,{
       method:'PUT',
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     })
     .then(res => this._isResponseOk(res))
   }
@@ -72,7 +79,8 @@ class Api {
   removeLike(cardId){
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`,{
       method:'DELETE',
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     })
     .then(res => this._isResponseOk(res))
   }
@@ -80,7 +88,7 @@ class Api {
 
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-65',
+  baseUrl: 'http://localhost:4000',
   headers: {
     authorization: '46497fa4-40de-48f4-8825-4510fbe41c2a',
     'Content-Type': 'application/json'

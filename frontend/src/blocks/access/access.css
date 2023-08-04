@@ -1,0 +1,6 @@
+.access {
+  margin: 60px 0 80px 0;
+  height: 430px;
+  display: flex;
+  flex-direction: column;
+}

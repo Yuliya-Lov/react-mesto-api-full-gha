@@ -1,0 +1,6 @@
+.place__about {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 22px;
+}

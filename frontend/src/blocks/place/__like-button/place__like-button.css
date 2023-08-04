@@ -1,0 +1,25 @@
+.place__like-button {
+  width: 22px;
+  height: 40px;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  color: #000000;
+  background-image: url(../../../images/heart.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  border: none;
+  background-color: transparent;
+  transition: all .5s;
+  cursor: pointer;
+}
+
+.place__like-button:hover {
+  opacity: 0.5;
+}

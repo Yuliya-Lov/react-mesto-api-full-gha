@@ -36,6 +36,19 @@ export const login = (email, password) => {
   )
     .catch(res => Promise.reject(res))
 }
+export const logout = () => {
+  return authRequest(
+    `${BASE_URL}/signout`,
+    {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include',
+    }
+  )
+    .catch(res => Promise.reject(res))
+}
 
 export const checkToken = () => {
   return authRequest(

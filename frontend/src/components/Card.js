@@ -1,6 +1,7 @@
 import React from "react"
 
 const Card = ({ currentUser, card, handleClick, handleLike, handleDeleteClick }) => {
+  console.log(card.owner,  currentUser.id)
   const isOwn = card.owner === currentUser.id;
 
   const isLiked = card.likes ? card.likes.some(i => i === currentUser.id) : false;

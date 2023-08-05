@@ -9,11 +9,9 @@ const {
 const auth = (req, res, next) => {
   // Ошибка при получении user была, т.к. токен был не из моей работы и назван был token, у меня jwt
   if (!req.cookies.jwt) {
-    console.log("не нащли куку!")
     return next(HTTP_STATUS_UNAUTHORIZED);
   }
   if (!checkToken(req.cookies.jwt)) {
-    console.log("не та куку!")
     return next(HTTP_STATUS_UNAUTHORIZED);
   }
   const payload = checkToken(req.cookies.jwt);

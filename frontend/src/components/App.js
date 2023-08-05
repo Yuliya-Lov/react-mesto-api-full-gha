@@ -55,7 +55,12 @@ function App() {
   React.useEffect(() => {
     api.getInitialCards()
       .then(cardsData => {
-        setCards(cardsData.data);
+        let res =[];
+        for(let i=0; i < cardsData.data.length; i++){
+          res.unshift(cardsData.data[i])
+        }
+        console.log(res);
+        setCards(res);
       })
       .catch(err => console.error('Ошибка при выполнении запроса:', err));
   }, [])
@@ -98,10 +103,10 @@ function App() {
     api.editUserInfo(newUserInfo)
       .then((user) => {
         setCurrentUser({
-          name: user.name,
-          about: user.about,
-          avatar: user.avatar,
-          id: user._id
+          ...currentUser,
+          name: user.data.name,
+          about: user.data.about,
+          avatar: user.data.avatar,
         })
         closeAllPopups();
       })
@@ -115,7 +120,7 @@ function App() {
       .then((user) => {
         setCurrentUser({
           ...currentUser,
-          avatar: user.avatar
+          avatar: user.data.avatar
         })
         closeAllPopups();
       })
@@ -127,7 +132,7 @@ function App() {
     setIsLoading(true);
     api.addCard(card)
       .then(card => {
-        setCards([card, ...cards])
+        setCards([card.data, ...cards])
         closeAllPopups();
       })
       .catch(err => console.error('Ошибка при выполнении запроса:', err))
@@ -202,11 +207,6 @@ function App() {
     setIsLoggedIn(value);
   }
 
-  function signOut() {
-    document.cookie = "name=jwt; expires=-1";
-    setEmail('');
-  }
-
   function handleChangeIsSucces(value) {
     setIsSucces(value);
   }
@@ -229,7 +229,7 @@ function App() {
         handleChangeIsLogged(true);
         navigate("/", { replace: true });
       })
-      .catch(err => console.error(`"Ошибка запроса: ${err}`))
+      .catch(err => console.log(`Неуспешная авторизация`))
   }
 
   React.useEffect(() => {
@@ -246,14 +246,24 @@ function App() {
     return auth.login(em, pass)
       .then(data => {
         handleChangeIsLogged(true);
-        /*      if(data.token){
-               localStorage.setItem('token', data.token);
-             } */
         navigate("/", { replace: true });
       })
       .catch((e) => {
         setIsInfoTooltipOpen(true);
         return Promise.reject();
+      })
+  }
+
+  function signOut() {
+    return auth.logout()
+      .then(() => {
+        handleChangeIsLogged(false);
+       // navigate("/signin", { replace: true });
+      })
+      .catch((e) => {
+        console.log(e)
+       // setIsInfoTooltipOpen(true);
+       // return Promise.reject();
       })
   }
 

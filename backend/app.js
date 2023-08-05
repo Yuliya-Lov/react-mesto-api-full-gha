@@ -9,7 +9,7 @@ const { errors } = require('celebrate');
 const { PORT = 4000 } = process.env;
 const app = express();
 const bodyParser = require('body-parser');
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 const { userRouter, urlPattern } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
 const { auth } = require('./middlewares/auth');
@@ -44,11 +44,14 @@ app.post('/signin', celebrate({
   }).unknown(true),
 }), login);
 
+app.post('/signout', logout);
+
 app.use('/users', celebrate({
   cookies: Joi.object().keys({
     jwt: Joi.string(),
   }),
 }), auth, userRouter);
+
 app.use('/cards', celebrate({
   cookies: Joi.object().keys({
     jwt: Joi.string(),

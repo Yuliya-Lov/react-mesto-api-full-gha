@@ -10,8 +10,8 @@ const Header = (props) => {
   const handleClick =(e) => {
     if (location.pathname === '/'){
       props.signOut();
-      props.handleChangeIsLogged(false);
-      navigate('/signin', {replace: true})
+     /*  props.handleChangeIsLogged(false);
+      navigate('/signin', {replace: true}) */
     }
     if (location.pathname === '/signin'){
       navigate('/signup', {replace: true})

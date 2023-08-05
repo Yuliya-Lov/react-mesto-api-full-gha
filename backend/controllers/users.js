@@ -61,6 +61,10 @@ const authMe = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const logout = (req, res) => {
+  res.clearCookie('jwt').status(200).send({message: "Ecgtiysq ds[j"})
+};
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials({ email, password })
@@ -107,4 +111,5 @@ module.exports = {
   updateUserAvatar,
   authMe,
   login,
+  logout
 };

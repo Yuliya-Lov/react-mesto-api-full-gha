@@ -39,32 +39,6 @@ function App() {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('')
 
-  React.useEffect(() => {
-    api.getUserInfo()
-      .then((userData) => {
-        setCurrentUser({
-          name: userData.name,
-          about: userData.about,
-          avatar: userData.avatar,
-          id: userData._id
-        })
-      })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err));
-  }, [])
-
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then(cardsData => {
-        let res =[];
-        for(let i=0; i < cardsData.data.length; i++){
-          res.unshift(cardsData.data[i])
-        }
-        console.log(res);
-        setCards(res);
-      })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err));
-  }, [])
-
   function handleCardLike(card) {
     const isLiked = card.likes ? card.likes.some(i => i === currentUser.id) : false;
     const apiRequest = isLiked
@@ -158,6 +132,74 @@ function App() {
     setTimeout(handleChangeIsSucces(false), 1000);
   }
 
+  function handleEditAvatarClick() {
+    setEditAvatarPopupOpen(true);
+  }
+
+  function handleEditProfileClick() {
+    setEditProfilePopupOpen(true);
+  }
+
+  function handleAddPlaceClick() {
+    setAddPlacePopupOpen(true);
+  }
+
+  function handleConfirmClick() {
+    setConfirmPopupOpen(true);
+  }
+
+  function handleChangeIsLogged(value) {
+    setIsLoggedIn(value);
+  }
+
+  function handleChangeIsSucces(value) {
+    setIsSucces(value);
+  }
+
+  function onLogin(em, pass) {
+    return auth.login(em, pass)
+      .then(data => {
+        setEmail(data.email);
+        setCurrentUser({
+          name: data.name,
+          about: data.about,
+          avatar: data.avatar,
+          id: data._id
+        })
+        handleChangeIsLogged(true);
+        navigate("/", { replace: true });
+      })
+      .catch((e) => {
+        setIsInfoTooltipOpen(true);
+        return Promise.reject();
+      })
+  }
+
+  function signOut() {
+    return auth.logout()
+      .then(() => {
+        handleChangeIsLogged(false);
+      })
+      .catch((e) => {
+        console.log("Не удалось выйти, попробуйте еще раз")
+        setIsInfoTooltipOpen(true);
+      })
+  }
+
+  function onRegister(em, pass) {
+    return auth.register(em, pass)
+      .then(() => {
+        handleChangeIsSucces(true);
+        setIsInfoTooltipOpen(true);
+        navigate('/signin', { replace: true })
+      })
+      .catch((e) => {
+        handleChangeIsSucces(false);
+        setIsInfoTooltipOpen(true);
+        return Promise.reject();
+      })
+  }
+
   React.useEffect(() => {
     function closeByEscape(evt) {
       if (evt.key === 'Escape') {
@@ -187,99 +229,31 @@ function App() {
     }
   }, [isOpen])
 
-  function handleEditAvatarClick() {
-    setEditAvatarPopupOpen(true);
-  }
-
-  function handleEditProfileClick() {
-    setEditProfilePopupOpen(true);
-  }
-
-  function handleAddPlaceClick() {
-    setAddPlacePopupOpen(true);
-  }
-
-  function handleConfirmClick() {
-    setConfirmPopupOpen(true);
-  }
-
-  function handleChangeIsLogged(value) {
-    setIsLoggedIn(value);
-  }
-
-  function handleChangeIsSucces(value) {
-    setIsSucces(value);
-  }
-
-  function handletokenCheck() {
-    auth.checkToken()
-      .then(data => {
-        setEmail(data.data.email);
+  React.useEffect(() => {
+    api.getUserInfo()
+      .then((userData) => {
+        setEmail(userData.data.email);
         setCurrentUser({
-          name: data.data.name,
-          about: data.data.about,
-          avatar: data.data.avatar,
-          id: data.data._id
+          name: userData.data.name,
+          about: userData.data.about,
+          avatar: userData.data.avatar,
+          id: userData.data._id
         })
-        api.getInitialCards()
-          .then(cardsData => {
-            setCards(cardsData.data);
-          })
-          .catch(err => console.error('Ошибка при выполнении запроса:', err));
         handleChangeIsLogged(true);
         navigate("/", { replace: true });
       })
-      .catch(err => console.log(`Неуспешная авторизация`))
-  }
-
-  React.useEffect(() => {
-    handletokenCheck();
-
+      .catch(err => console.log('Необходима авторизация'));
   }, [])
 
   React.useEffect(() => {
-    handletokenCheck()
+    if (isLoggedIn) {
+      api.getInitialCards()
+        .then(cardsData => {
+          setCards(cardsData.data.reverse());
+        })
+        .catch(err => console.error('Ошибка при выполнении запроса:', err));
+    }
   }, [isLoggedIn])
-
-
-  function onLogin(em, pass) {
-    return auth.login(em, pass)
-      .then(data => {
-        handleChangeIsLogged(true);
-        navigate("/", { replace: true });
-      })
-      .catch((e) => {
-        setIsInfoTooltipOpen(true);
-        return Promise.reject();
-      })
-  }
-
-  function signOut() {
-    return auth.logout()
-      .then(() => {
-        handleChangeIsLogged(false);
-       // navigate("/signin", { replace: true });
-      })
-      .catch((e) => {
-        console.log(e)
-       // setIsInfoTooltipOpen(true);
-       // return Promise.reject();
-      })
-  }
-
-  function onRegister(em, pass) {
-    return auth.register(em, pass)
-      .then(() => {
-        handleChangeIsSucces(true);
-        setIsInfoTooltipOpen(true);
-        navigate('/signin', { replace: true })
-      })
-      .catch((e) => {
-        handleChangeIsSucces(false);
-        setIsInfoTooltipOpen(true);
-        return Promise.reject();
-      })
-  }
 
   return (
     <div className="root">

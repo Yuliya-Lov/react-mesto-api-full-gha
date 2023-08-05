@@ -2,7 +2,7 @@ import React from "react";
 import Card from "./Card";
 
 const Main = ({ currentUser, cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }) => {
-  console.log(cards);
+  //console.log(cards);
   return (
     <main className="content">
       <section className="profile">

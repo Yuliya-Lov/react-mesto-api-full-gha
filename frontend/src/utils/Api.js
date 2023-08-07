@@ -88,7 +88,7 @@ class Api {
 
 
 const api = new Api({
-  baseUrl: 'https://api.place.nomoreparties.co/',
+  baseUrl: 'https://api.place.nomoreparties.co',
   headers: {
     'Content-Type': 'application/json'
   }

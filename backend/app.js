@@ -6,7 +6,7 @@ require('dotenv').config();
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 4000 } = process.env;
 const app = express();
 const bodyParser = require('body-parser');
 const { createUser, login, logout } = require('./controllers/users');

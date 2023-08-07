@@ -98,7 +98,7 @@ function App() {
         })
         closeAllPopups();
       })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err))
+      .catch(err => console.log('Ошибка при выполнении запроса:', err))
       .finally(() => setIsLoading(false))
   }
 
@@ -109,7 +109,7 @@ function App() {
         setCards([card.data, ...cards])
         closeAllPopups();
       })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err))
+      .catch(err => console.log('Ошибка при выполнении запроса:', err))
       .finally(() => setIsLoading(false))
   }
 

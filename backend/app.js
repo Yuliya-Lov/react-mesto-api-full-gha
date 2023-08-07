@@ -17,6 +17,7 @@ const {
   HTTP_PAGE_STATUS_NOT_FOUND,
   customErrors,
 } = require('./utils/errors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   useNewUrlParser: true,
@@ -26,6 +27,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -60,6 +68,8 @@ app.use('/cards', celebrate({
 app.use('/*', (req, res, next) => {
   next(HTTP_PAGE_STATUS_NOT_FOUND);
 });
+
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => customErrors(err, req, res, next));
 

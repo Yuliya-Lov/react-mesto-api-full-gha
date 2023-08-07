@@ -23,7 +23,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-const allowedCors = [
+/* const allowedCors = [
   'https://place.nomoreparties.co',
   'http://place.nomoreparties.co',
   'http://localhost:3000',
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-
+ */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());

@@ -1,5 +1,5 @@
 import authRequest from './authRequest.js';
-export const BASE_URL = 'https://api.place.nomoreparties.co/';
+export const BASE_URL = "http://localhost:4000";
 
 export const register = (email, password) => {
   return authRequest(

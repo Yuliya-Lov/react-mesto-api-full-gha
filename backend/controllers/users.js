@@ -62,7 +62,7 @@ const authMe = (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('jwt').status(200).send({message: "Ecgtiysq ds[j"})
+  res.clearCookie('jwt').status(200).send({ message: 'Ecgtiysq ds[j' });
 };
 
 const login = (req, res, next) => {
@@ -111,5 +111,5 @@ module.exports = {
   updateUserAvatar,
   authMe,
   login,
-  logout
+  logout,
 };

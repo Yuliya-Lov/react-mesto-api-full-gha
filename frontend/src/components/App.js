@@ -51,7 +51,7 @@ function App() {
           state.map(item => item._id === card._id ? newCard.data : item)
         )
       })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err));
+      .catch(err => console.log('Ошибка изменения лайков карточки'));
   }
 
   function deleteConfirmCard() {
@@ -63,7 +63,7 @@ function App() {
         setDeletedCard(null)
       }
       )
-      .catch(err => console.error('Ошибка при выполнении запроса:', err))
+      .catch(err => console.log('Не удалось удалить карточку. Попробуйте еще раз'))
       .finally(() => setIsLoading(false))
   }
 
@@ -84,7 +84,7 @@ function App() {
         })
         closeAllPopups();
       })
-      .catch(err => console.error('Ошибка при выполнении запроса:', err))
+      .catch(err => console.log('Не удалось обновить информацию. Попробуйте еще раз'))
       .finally(() => setIsLoading(false))
   }
 
@@ -129,7 +129,7 @@ function App() {
     setConfirmPopupOpen(false);
     setImagePopupOpen(false);
     setIsInfoTooltipOpen(false);
-    setTimeout(handleChangeIsSucces(false), 1000);
+    setTimeout(() => handleChangeIsSucces(false), 2000);
   }
 
   function handleEditAvatarClick() {
@@ -251,7 +251,7 @@ function App() {
         .then(cardsData => {
           setCards(cardsData.data.reverse());
         })
-        .catch(err => console.error('Ошибка при выполнении запроса:', err));
+        .catch(err => console.log('Не удалось получить карточки пользователя'));
     }
   }, [isLoggedIn])
 

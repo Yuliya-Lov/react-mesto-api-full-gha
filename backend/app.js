@@ -26,7 +26,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(requestLogger);
 
 app.get('/crash-test', () => {
